@@ -17,3 +17,12 @@ D:\My_C#\МИСППИ\МОАД_Лаб_2_0_СS\МОАД_Лаб_2_0\obj\Debug\МО
 D:\My_C#\МИСППИ\МОАД_Лаб_2_0_СS\МОАД_Лаб_2_0\obj\Debug\МОАД_Лаб_2_0.csproj.GenerateResource.cache
 D:\My_C#\МИСППИ\МОАД_Лаб_2_0_СS\МОАД_Лаб_2_0\obj\Debug\МОАД_Лаб_2_0.exe
 D:\My_C#\МИСППИ\МОАД_Лаб_2_0_СS\МОАД_Лаб_2_0\obj\Debug\МОАД_Лаб_2_0.pdb
+D:\Github\SaACDP_Lab_1_2\МОАД_Лаб_2_0_СS\МОАД_Лаб_2_0\obj\Debug\МОАД_Лаб_2_0.csprojAssemblyReference.cache
+D:\Github\SaACDP_Lab_1_2\МОАД_Лаб_2_0_СS\МОАД_Лаб_2_0\obj\Debug\МОАД_Лаб_2_0.Form1.resources
+D:\Github\SaACDP_Lab_1_2\МОАД_Лаб_2_0_СS\МОАД_Лаб_2_0\obj\Debug\МОАД_Лаб_2_0.Properties.Resources.resources
+D:\Github\SaACDP_Lab_1_2\МОАД_Лаб_2_0_СS\МОАД_Лаб_2_0\obj\Debug\МОАД_Лаб_2_0.csproj.GenerateResource.cache
+D:\Github\SaACDP_Lab_1_2\МОАД_Лаб_2_0_СS\МОАД_Лаб_2_0\obj\Debug\МОАД_Лаб_2_0.exe
+D:\Github\SaACDP_Lab_1_2\МОАД_Лаб_2_0_СS\МОАД_Лаб_2_0\obj\Debug\МОАД_Лаб_2_0.pdb
+D:\Github\SaACDP_Lab_1_2\МОАД_Лаб_2_0_СS\МОАД_Лаб_2_0\bin\Debug\МОАД_Лаб_2_0.exe.config
+D:\Github\SaACDP_Lab_1_2\МОАД_Лаб_2_0_СS\МОАД_Лаб_2_0\bin\Debug\МОАД_Лаб_2_0.exe
+D:\Github\SaACDP_Lab_1_2\МОАД_Лаб_2_0_СS\МОАД_Лаб_2_0\bin\Debug\МОАД_Лаб_2_0.pdb

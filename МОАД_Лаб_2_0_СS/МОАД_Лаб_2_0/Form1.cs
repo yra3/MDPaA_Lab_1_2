@@ -31,6 +31,16 @@ namespace МОАД_Лаб_2_0
 
         int[] dateFromTextFile = new int[0];
 
+        int Sum(ref int[] array)
+        {
+            int sum = 0;
+            for (int i = 0; i< array.Length; i++)
+            {
+                sum += array[i];
+            }
+            return sum;
+        }
+
         int[] createRandomArrayAndOutSumOfElements(out int sum, int length = 100)
         {
             int[] a = new int[length];
@@ -46,7 +56,7 @@ namespace МОАД_Лаб_2_0
             return a;
         }
 
-        class SaverArrayToFile
+        abstract class SaverArrayToFile
         {
             protected int[] date;
             public SaverArrayToFile(ref int[] array)
@@ -54,16 +64,13 @@ namespace МОАД_Лаб_2_0
                 date = array;
             }
 
-            public virtual void saveData(string fileName)
-            {
-            }
+            public abstract void saveData(string fileName);
         }
 
         class SaverArrayToFileBinary : SaverArrayToFile
         {
             public SaverArrayToFileBinary(ref int[] array) : base(ref array)
-            {
-            }
+            { }
 
             public override void saveData(string fileName)
             {
@@ -83,8 +90,7 @@ namespace МОАД_Лаб_2_0
         class SaverArrayToFileText : SaverArrayToFile
         {
             public SaverArrayToFileText(ref int[] array) : base(ref array)
-            {
-            }
+            { }
 
             public override void saveData(string fileName)
             {
@@ -94,6 +100,85 @@ namespace МОАД_Лаб_2_0
                     streamWriter.WriteLine(date[i]);
                 }
                 streamWriter.Close();
+            }
+        }
+
+        abstract class ReaderArrayFromFile
+        {
+            protected string fileName;
+            public ReaderArrayFromFile(string fileName)
+            {
+                this.fileName = fileName;
+            }
+
+            public abstract int[] ReadData();
+
+
+        }
+
+        class ReaderArrayFromFileBinary : ReaderArrayFromFile
+        {
+            public ReaderArrayFromFileBinary(string fileName) : base(fileName)
+            {
+            }
+
+            public override int[] ReadData()
+            {
+                FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+                BinaryReader binaryReader = new BinaryReader(fileStream);
+
+                int count = 0;
+                int[] date = new int[count];
+                try
+                {
+                    while (true)
+                    {
+                        int k = binaryReader.ReadInt32();
+                        count++;
+                        Array.Resize(ref date, count);
+                        date[date.Length - 1] = k;
+                    }
+                }
+                catch
+                { }
+                finally
+                {
+                    binaryReader.Close();
+                    fileStream.Close();
+                }
+                return date;
+             }
+        }
+
+        class ReaderArrayFromFileText : ReaderArrayFromFile
+        {
+            public ReaderArrayFromFileText(string fileName) : base(fileName)
+            { }
+
+            public override int[] ReadData()
+            {
+                StreamReader sr = File.OpenText(nameTextFile);
+
+                int[] data = new int[0];
+                int count = 0;
+                while (true)
+                {
+                    string str = sr.ReadLine();
+                    if (str == null) break;
+                    int k;
+                    if (int.TryParse(str, out k))
+                    {
+                        count++;
+                        Array.Resize(ref data, count);
+                        data[data.Length - 1] = k;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                sr.Close();
+                return data;
             }
         }
 
@@ -112,7 +197,7 @@ namespace МОАД_Лаб_2_0
 
             SaverArrayToFile saverArrayToFile = new SaverArrayToFileBinary(ref date);
             saverArrayToFile.saveData(nameBinaryFile);
-            
+
             textBox1.Text += $"Данные сохранены в \"{nameBinaryFile}\"." + NL;
 
             // save data to text file
@@ -120,36 +205,21 @@ namespace МОАД_Лаб_2_0
             saverArrayToFile.saveData(nameTextFile);
 
             textBox1.Text += $"Данные сохранены в \"{nameTextFile}\"." + NL;
+
             button2.Show();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             //read date from binary file
-            FileStream fileStream = new FileStream("data.dat", FileMode.Open, FileAccess.Read);
-            BinaryReader binaryReader = new BinaryReader(fileStream);
+            ReaderArrayFromFileBinary readerArrayFromFileBinary = new ReaderArrayFromFileBinary(nameBinaryFile);
+            dateFromBinaryFile = readerArrayFromFileBinary.ReadData();
+
+            int count = dateFromBinaryFile.Length;
+            int sum = Sum(ref dateFromBinaryFile);
+
+            textBox1.Text += $"Файл \"{nameBinaryFile}\" считан." + NL;
             
-            int count = 0, sum = 0;
-            try
-            {
-                while (true)
-                {
-                    int k = binaryReader.ReadInt32();
-                    count++;
-                    sum += k;
-                    Array.Resize(ref dateFromBinaryFile, count);
-                    dateFromBinaryFile[dateFromBinaryFile.Length - 1] = k;
-                }
-            }
-            catch
-            {
-                textBox1.Text += $"Файл \"{nameBinaryFile}\" считан." + NL;
-            }
-            finally
-            {
-                binaryReader.Close();
-                fileStream.Close();
-            }
             textBox1.Text += string.Format("Всего {0} чисел, сумма равна {1}.", count, sum) + NL;
             textBox1.Text += string.Format("a[0]={0} a[{2}]={1}.", dateFromBinaryFile[0], dateFromBinaryFile[count - 1], count - 1) + NL;
             button3.Show();
@@ -157,30 +227,14 @@ namespace МОАД_Лаб_2_0
 
         private void button3_Click(object sender, EventArgs e)
         {
-            StreamReader sr = File.OpenText("data.txt");
+            ReaderArrayFromFileText readerArrayFromFileText = new ReaderArrayFromFileText(nameTextFile);
+            dateFromTextFile = readerArrayFromFileText.ReadData();
+
+            int count = dateFromTextFile.Length, sum = Sum(ref dateFromTextFile);
             
-            int count = 0, sum = 0;
-            while (true)
-            {
-                string str = sr.ReadLine();
-                if (str == null) break;
-                int k;
-                if (int.TryParse(str, out k))
-                {
-                    count++;
-                    sum += k;
-                    Array.Resize(ref dateFromTextFile, count);
-                    dateFromTextFile[dateFromTextFile.Length - 1] = k;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            sr.Close();
             textBox1.Text += $"Файл \"{nameTextFile}\" считан." + NL;
             textBox1.Text += string.Format("Всего {0} чисел, сумма равна {1}.", count, sum) + NL;
-            textBox1.Text += string.Format("a[0]={0} a[2]={1}.", dateFromTextFile[0], dateFromTextFile[count - 1], count - 1) + NL;
+            textBox1.Text += string.Format("a[0]={0} a[{2}]={1}.", dateFromTextFile[0], dateFromTextFile[count - 1], count - 1) + NL;
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -188,9 +242,9 @@ namespace МОАД_Лаб_2_0
             int count = 0, sum = 0;
             int[] c = new int[0];
 
-            for (int i = 0; i< dateFromBinaryFile.Length; i++)
+            for (int i = 0; i < dateFromBinaryFile.Length; i++)
             {
-                if (dateFromBinaryFile[i]< dateFromTextFile[i])
+                if (dateFromBinaryFile[i] < dateFromTextFile[i])
                 {
                     count++;
                     Array.Resize(ref c, count);
